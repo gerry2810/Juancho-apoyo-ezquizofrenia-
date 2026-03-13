@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Red de Apoyo – Juancho</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,600;0,800;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2330;
+    --accent: #58a6ff;
+    --accent2: #79c0ff;
+    --warm: #f0a050;
+    --green: #56d364;
+    --red: #ff6b6b;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --border: #30363d;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(13,17,23,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+  }
+
+  .nav-logo {
+    font-family: 'Fraunces', serif;
+    font-size: 1.1rem;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 0.25rem;
+    list-style: none;
+    flex-wrap: wrap;
+  }
+
+  .nav-links button {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    padding: 0.4rem 0.7rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .nav-links button:hover,
+  .nav-links button.active {
+    color: var(--text);
+    background: var(--surface2);
+  }
+
+  /* HERO */
+  .hero {
+    padding: 120px 1.5rem 60px;
+    max-width: 860px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: rgba(88,166,255,0.12);
+    border: 1px solid rgba(88,166,255,0.3);
+    color: var(--accent);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.35rem 1rem;
+    border-radius: 100px;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.2rem;
+  }
+
+  .hero h1 span {
+    color: var(--accent);
+  }
+
+  .hero p {
+    font-size: 1.05rem;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+  }
+
+  .hero-author {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 0.5rem 1.2rem 0.5rem 0.5rem;
+    font-size: 0.88rem;
+  }
+
+  .avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--warm));
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: 0.9rem;
+    color: #000;
+    flex-shrink: 0;
+  }
+
+  /* SECTIONS */
+  .section {
+    display: none;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 80px 1.5rem 60px;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  .section.active { display: block; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-title span { color: var(--accent); }
+
+  .section-subtitle {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin-bottom: 2.5rem;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    transition: border-color 0.2s;
+  }
+
+  .card:hover { border-color: var(--accent); }
+
+  .card-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .card h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+    color: var(--accent2);
+  }
+
+  .card p {
+    color: var(--muted);
+    font-size: 0.92rem;
+    line-height: 1.7;
+  }
+
+  .card p strong { color: var(--text); }
+
+  /* HISTORIA */
+  .historia-intro {
+    background: linear-gradient(135deg, rgba(88,166,255,0.08), rgba(240,160,80,0.06));
+    border: 1px solid rgba(88,166,255,0.2);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .historia-intro::before {
+    content: '"';
+    font-family: 'Fraunces', serif;
+    font-size: 8rem;
+    color: rgba(88,166,255,0.08);
+    position: absolute;
+    top: -1rem; left: 1rem;
+    line-height: 1;
+  }
+
+  .historia-intro p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--text);
+    position: relative;
+  }
+
+  .tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    padding: 0.2rem 0.65rem;
+    border-radius: 100px;
+    margin-right: 0.4rem;
+    margin-bottom: 0.4rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .tag-blue { background: rgba(88,166,255,0.15); color: var(--accent); border: 1px solid rgba(88,166,255,0.25); }
+  .tag-warm { background: rgba(240,160,80,0.15); color: var(--warm); border: 1px solid rgba(240,160,80,0.25); }
+  .tag-green { background: rgba(86,211,100,0.15); color: var(--green); border: 1px solid rgba(86,211,100,0.25); }
+
+  /* EMERGENCIAS */
+  .emergency-banner {
+    background: linear-gradient(135deg, rgba(255,107,107,0.15), rgba(255,107,107,0.05));
+    border: 1px solid rgba(255,107,107,0.4);
+    border-radius: 14px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .emergency-banner .icon { font-size: 2rem; flex-shrink: 0; }
+
+  .emergency-banner p {
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .emergency-banner strong { color: var(--red); }
+
+  .phone-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    transition: all 0.2s;
+  }
+
+  .phone-card:hover { border-color: var(--red); transform: translateX(4px); }
+
+  .phone-card .info h4 {
+    font-weight: 500;
+    font-size: 0.95rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .phone-card .info p {
+    color: var(--muted);
+    font-size: 0.82rem;
+  }
+
+  .phone-number {
+    font-family: 'Fraunces', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--red);
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+
+  .phone-number:hover { opacity: 0.8; }
+
+  /* TRATAMIENTOS */
+  .tratamiento-nota {
+    background: rgba(240,160,80,0.08);
+    border-left: 3px solid var(--warm);
+    border-radius: 0 10px 10px 0;
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .tratamiento-nota strong { color: var(--warm); }
+
+  /* INFO GRID */
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  /* COMUNIDAD */
+  .community-form {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .community-form h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.1rem;
+    margin-bottom: 1.25rem;
+    color: var(--accent2);
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 0.82rem;
+    color: var(--muted);
+    margin-bottom: 0.4rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.92rem;
+    outline: none;
+    transition: border-color 0.2s;
+    resize: vertical;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus { border-color: var(--accent); }
+
+  .btn {
+    background: var(--accent);
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 0.92rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .btn:hover { opacity: 0.85; }
+
+  .message-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .message-card .meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .message-card .meta .mini-avatar {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--green), var(--accent));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #000;
+    flex-shrink: 0;
+  }
+
+  .message-card .meta span {
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+
+  .message-card p {
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: var(--text);
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* MOBILE */
+  @media (max-width: 600px) {
+    nav { padding: 0 1rem; }
+    .nav-links { gap: 0.1rem; }
+    .nav-links button { font-size: 0.7rem; padding: 0.35rem 0.5rem; }
+    .hero { padding: 90px 1rem 40px; }
+    .section { padding: 70px 1rem 40px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Juancho 💙</div>
+  <ul class="nav-links">
+    <li><button onclick="show('inicio')" class="active" id="btn-inicio">Inicio</button></li>
+    <li><button onclick="show('historia')" id="btn-historia">Mi Historia</button></li>
+    <li><button onclick="show('alternativas')" id="btn-alternativas">Alternativas</button></li>
+    <li><button onclick="show('tratamientos')" id="btn-tratamientos">Tratamientos</button></li>
+    <li><button onclick="show('info')" id="btn-info">Info</button></li>
+    <li><button onclick="show('emergencias')" id="btn-emergencias">🆘 Emergencias</button></li>
+    <li><button onclick="show('comunidad')" id="btn-comunidad">Comunidad</button></li>
+  </ul>
+</nav>
+
+<!-- INICIO -->
+<div id="inicio" class="section active">
+  <div class="hero">
+    <div class="hero-badge">Red de Apoyo · México</div>
+    <h1>Vivir con esquizofrenia<br><span>no significa rendirse</span></h1>
+    <p>Un espacio creado desde la experiencia real, para quienes la viven. Aquí encontrarás estrategias, información y acompañamiento.</p>
+    <div class="hero-author">
+      <div class="avatar">JG</div>
+      <span>Creado por <strong>Juancho</strong> — 10 años de experiencia vivida</span>
+    </div>
+  </div>
+
+  <div class="info-grid" style="max-width:860px;margin:0 auto;">
+    <div class="card" onclick="show('historia')" style="cursor:pointer">
+      <div class="card-icon">📖</div>
+      <h3>Mi Historia</h3>
+      <p>Cómo comenzó todo y qué aprendí en el camino. Una historia real de superación.</p>
+    </div>
+    <div class="card" onclick="show('alternativas')" style="cursor:pointer">
+      <div class="card-icon">🧩</div>
+      <h3>Mis Alternativas</h3>
+      <p>Las estrategias que desarrollé para manejar alucinaciones, delirios y más síntomas.</p>
+    </div>
+    <div class="card" onclick="show('tratamientos')" style="cursor:pointer">
+      <div class="card-icon">💊</div>
+      <h3>Tratamientos</h3>
+      <p>Lo que mi psiquiatra me ha indicado. Información orientativa sobre el tratamiento.</p>
+    </div>
+    <div class="card" onclick="show('info')" style="cursor:pointer">
+      <div class="card-icon">🧠</div>
+      <h3>¿Qué es la Esquizofrenia?</h3>
+      <p>Síntomas, evolución, tipos y todo lo que necesitas saber.</p>
+    </div>
+    <div class="card" onclick="show('emergencias')" style="cursor:pointer">
+      <div class="card-icon">🆘</div>
+      <h3>Emergencias en México</h3>
+      <p>Líneas de crisis, hospitales y recursos disponibles ahora mismo.</p>
+    </div>
+    <div class="card" onclick="show('comunidad')" style="cursor:pointer">
+      <div class="card-icon">🤝</div>
+      <h3>Comunidad</h3>
+      <p>Comparte tu experiencia. No estás solo/a en este camino.</p>
+    </div>
+  </div>
+</div>
+
+<!-- MI HISTORIA -->
+<div id="historia" class="section">
+  <div class="section-title">Mi <span>Historia</span></div>
+  <div class="section-subtitle">Juan Gerardo Silva Rivas — "Juancho"</div>
+
+  <div class="historia-intro">
+    <p>Mi historia comenzó <strong>hace 10 años</strong>. Todo empezó con alucinaciones auditivas — para mí era algo completamente nuevo y no sabía cómo enfrentarlas.</p>
+    <br>
+    <p>Hacía muchas cosas: llamaba a toda mi familia porque me sentía amenazado, llamaba a la policía, a los militares... me metí en problemas con mis vecinos. Era una época muy difícil y confusa.</p>
+    <br>
+    <p><strong>Pero con el tiempo, algo cambió.</strong> Empecé a entender lo que me pasaba. Desarrollé mis propias estrategias. Encontré formas de vivir bien, no a pesar de la esquizofrenia, sino con ella.</p>
+    <br>
+    <p>Hoy creo esta red de apoyo porque sé lo que se siente cuando no tienes a nadie que lo entienda de verdad. Quiero ser esa voz para ti.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">✨</div>
+    <h3>Lo que aprendí</h3>
+    <p>Que la esquizofrenia no me define. Que con las herramientas correctas, el acompañamiento médico y las estrategias adecuadas, <strong>se puede tener una vida plena</strong>. Llevo 10 años construyendo esa vida, y quiero compartir todo lo que aprendí contigo.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">💙</div>
+    <h3>Por qué hice esta app</h3>
+    <p>Porque cuando yo lo estaba pasando mal, <strong>no había nadie que hubiera vivido lo mismo</strong> y me pudiera orientar. Los libros ayudan, los doctores ayudan — pero hay algo único en escuchar a alguien que lo ha vivido. Eso es lo que quiero darte aquí.</p>
+  </div>
+</div>
+
+<!-- ALTERNATIVAS -->
+<div id="alternativas" class="section">
+  <div class="section-title">Mis <span>Alternativas</span></div>
+  <div class="section-subtitle">Estrategias que desarrollé con los años — desde la experiencia real</div>
+
+  <div class="card">
+    <div class="card-icon">🎵</div>
+    <h3>Alucinaciones auditivas leves</h3>
+    <div style="margin-bottom:0.75rem">
+      <span class="tag tag-blue">Sonido ambiente</span>
+      <span class="tag tag-blue">Música</span>
+      <span class="tag tag-blue">Televisión</span>
+    </div>
+    <p>Escucho sonidos de fondo como el <strong>ventilador, la televisión o música</strong>. Estos sonidos me anclan a la realidad y reducen la intensidad de las voces leves. Es una técnica sencilla pero muy efectiva para el día a día.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">🧘</div>
+    <h3>Alucinaciones auditivas críticas</h3>
+    <div style="margin-bottom:0.75rem">
+      <span class="tag tag-warm">Escucha consciente</span>
+      <span class="tag tag-warm">Reencuadre</span>
+    </div>
+    <p>Las escucho y las <strong>utilizo para ser mejor</strong>. Al estar al pendiente de lo que dicen las voces, tengo que actuar: bañarme diario, cuidarme. Son como mi conciencia interna. En vez de luchar contra ellas, las convierto en motivación.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">🚶</div>
+    <h3>Alucinaciones más fuertes</h3>
+    <div style="margin-bottom:0.75rem">
+      <span class="tag tag-green">Verificación espacial</span>
+      <span class="tag tag-green">Anclaje físico</span>
+    </div>
+    <p>Primero <strong>ubico de dónde escucho la voz</strong> y me dirijo físicamente hacia ese lugar. Al llegar y ver que no hay nada, la alucinación desaparece. El movimiento físico rompe el ciclo.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">🔍</div>
+    <h3>Para los delirios</h3>
+    <div style="margin-bottom:0.75rem">
+      <span class="tag tag-blue">Metacognición</span>
+    </div>
+    <p>Uso la <strong>metacognición</strong>: pienso por qué pienso lo que pienso. Al analizar el origen de mis ideas delirantes, llego a la conclusión de que son producto de algún acontecimiento pasado. Entender el origen me da control.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">⚡</div>
+    <h3>Para la hiperfocalización y anhedonia</h3>
+    <div style="margin-bottom:0.75rem">
+      <span class="tag tag-warm">Sistema dopaminérgico</span>
+      <span class="tag tag-warm">Regulación de energía</span>
+    </div>
+    <p>Regulo mi sistema dopaminérgico <strong>posponiendo la recompensa</strong>. Cuando hay hiperfoco, no gasto toda la energía de una sola vez — la distribuyo. Así la anhedonia (falta de placer) se vuelve más leve porque el sistema no se agota.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">💬</div>
+    <h3>Para el pensamiento desorganizado</h3>
+    <div style="margin-bottom:0.75rem">
+      <span class="tag tag-green">Soliloquio</span>
+      <span class="tag tag-green">Diálogo interno</span>
+    </div>
+    <p>Uso el <strong>soliloquio y el diálogo interno</strong>: hablo conmigo mismo de forma consciente y estructurada. Esto ayuda a organizar los pensamientos cuando se dispersan.</p>
+  </div>
+</div>
+
+<!-- TRATAMIENTOS -->
+<div id="tratamientos" class="section">
+  <div class="section-title"><span>Tratamientos</span></div>
+  <div class="section-subtitle">Información orientativa sobre el manejo médico de la esquizofrenia</div>
+
+  <div class="tratamiento-nota">
+    <strong>⚠️ Nota importante:</strong> Esta información es orientativa y basada en mi experiencia personal con mi psiquiatra. Cada persona es diferente. <strong>Siempre consulta con tu médico</strong> antes de cambiar o iniciar cualquier tratamiento.
+  </div>
+
+  <div class="card">
+    <div class="card-icon">💊</div>
+    <h3>Medicación antipsicótica</h3>
+    <p>Los <strong>antipsicóticos</strong> son el pilar del tratamiento. Pueden ser de toma diaria (pastillas) o de efecto prolongado (inyección mensual). Mi psiquiatra me explicó que la constancia en la medicación es lo más importante — no dejarla cuando uno se siente bien.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">🩺</div>
+    <h3>Seguimiento psiquiátrico</h3>
+    <p>Las consultas regulares con el psiquiatra permiten ajustar dosis, detectar efectos secundarios y prevenir recaídas. <strong>No esperes a estar en crisis</strong> para ir — el seguimiento preventivo es clave.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">🧠</div>
+    <h3>Psicoterapia</h3>
+    <p>La <strong>Terapia Cognitivo-Conductual (TCC)</strong> adaptada para psicosis me ha ayudado mucho. Trabaja el pensamiento, las creencias y las respuestas emocionales. No reemplaza la medicación, pero la complementa muy bien.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">🏃</div>
+    <h3>Hábitos de vida</h3>
+    <p><strong>Dormir bien, hacer ejercicio y tener rutinas</strong> son parte del tratamiento. El desorden en el sueño puede desestabilizar mucho. Yo aprendí que mantener horarios me ayuda a mantenerme estable.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">👨‍👩‍👧</div>
+    <h3>Red de apoyo familiar</h3>
+    <p>Mi familia aprendió sobre la enfermedad y eso cambió todo. Existen programas de <strong>psicoeducación familiar</strong> donde los familiares aprenden a acompañar sin sobreproteger y a identificar señales de alerta.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">🏥</div>
+    <h3>Dónde acceder en México (gratuito)</h3>
+    <p>En México puedes acceder a atención psiquiátrica gratuita en: <strong>IMSS, ISSSTE, Centros de Salud Mental (CESAM), Hospital Psiquiátrico Fray Bernardino Álvarez</strong> (CDMX) y los <strong>Centros de Integración Juvenil</strong> en todo el país.</p>
+  </div>
+</div>
+
+<!-- INFO -->
+<div id="info" class="section">
+  <div class="section-title">¿Qué es la <span>Esquizofrenia?</span></div>
+  <div class="section-subtitle">Información general para entender y desmitificar</div>
+
+  <div class="card">
+    <div class="card-icon">📋</div>
+    <h3>Definición</h3>
+    <p>La esquizofrenia es un <strong>trastorno mental crónico</strong> que afecta cómo una persona piensa, siente y se comporta. No es "doble personalidad" — eso es un mito. Afecta aproximadamente al <strong>1% de la población mundial</strong> y tiene tratamiento efectivo.</p>
+  </div>
+
+  <div class="info-grid">
+    <div class="card">
+      <div class="card-icon">🔴</div>
+      <h3>Síntomas positivos</h3>
+      <p>Son los que se <em>añaden</em> a la experiencia normal:<br><br>
+      • <strong>Alucinaciones</strong> (auditivas, visuales)<br>
+      • <strong>Delirios</strong> (creencias falsas fijas)<br>
+      • <strong>Pensamiento desorganizado</strong><br>
+      • Comportamiento agitado</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔵</div>
+      <h3>Síntomas negativos</h3>
+      <p>Son los que se <em>reducen</em> de la experiencia normal:<br><br>
+      • <strong>Anhedonia</strong> (falta de placer)<br>
+      • Aislamiento social<br>
+      • <strong>Alogia</strong> (poco habla)<br>
+      • Falta de motivación (abulia)</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">📈</div>
+    <h3>Evolución y pronóstico</h3>
+    <p>La esquizofrenia suele aparecer en la <strong>adolescencia tardía o adultez temprana</strong>. Con tratamiento adecuado, muchas personas logran llevar una vida plena. El pronóstico mejora con: diagnóstico temprano, adherencia al tratamiento y apoyo social. <strong>No es una condena — es un manejo de por vida.</strong></p>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">❌</div>
+    <h3>Mitos que debes conocer</h3>
+    <p>
+    • <strong>FALSO:</strong> "Las personas con esquizofrenia son violentas" — son más víctimas que agresores.<br><br>
+    • <strong>FALSO:</strong> "No pueden trabajar ni tener familia" — muchos lo hacen.<br><br>
+    • <strong>FALSO:</strong> "Es culpa de los padres" — tiene base neurobiológica y genética.<br><br>
+    • <strong>FALSO:</strong> "No tiene cura entonces para qué tratarse" — el tratamiento cambia la vida.
+    </p>
+  </div>
+</div>
+
+<!-- EMERGENCIAS -->
+<div id="emergencias" class="section">
+  <div class="section-title">🆘 <span>Emergencias</span> en México</div>
+  <div class="section-subtitle">Recursos disponibles ahora mismo</div>
+
+  <div class="emergency-banner">
+    <div class="icon">⚡</div>
+    <p>Si tú o alguien que conoces está en <strong>crisis ahora mismo</strong>, llama de inmediato. No esperes. Pedir ayuda es un acto de valentía.</p>
+  </div>
+
+  <div class="phone-card">
+    <div class="info">
+      <h4>SAPTEL — Línea de Crisis 24/7</h4>
+      <p>Apoyo emocional y crisis. Todo México. Gratuito.</p>
+    </div>
+    <a href="tel:5255102550" class="phone-number">55 5010-2550</a>
+  </div>
+
+  <div class="phone-card">
+    <div class="info">
+      <h4>LOCATEL CDMX</h4>
+      <p>Orientación y servicios de emergencia en Ciudad de México.</p>
+    </div>
+    <a href="tel:5556581111" class="phone-number">55 5658-1111</a>
+  </div>
+
+  <div class="phone-card">
+    <div class="info">
+      <h4>Línea de la Vida — SSA</h4>
+      <p>Secretaría de Salud. Salud mental, adicciones, orientación.</p>
+    </div>
+    <a href="tel:800-911-2000" class="phone-number">800-911-2000</a>
+  </div>
+
+  <div class="phone-card">
+    <div class="info">
+      <h4>IMSS — Urgencias</h4>
+      <p>Si tienes derechohabiencia, acude a urgencias de tu hospital más cercano.</p>
+    </div>
+    <a href="tel:800-623-2323" class="phone-number">800-623-2323</a>
+  </div>
+
+  <div class="phone-card">
+    <div class="info">
+      <h4>Emergencias Generales</h4>
+      <p>Policía, bomberos, ambulancias. Todo México.</p>
+    </div>
+    <a href="tel:911" class="phone-number">911</a>
+  </div>
+
+  <div class="card" style="margin-top:1.5rem">
+    <div class="card-icon">🏥</div>
+    <h3>Hospitales de Salud Mental en México</h3>
+    <p>
+    • <strong>Hospital Psiquiátrico Fray Bernardino Álvarez</strong> — CDMX: Niño Jesús 2, Tlalpan<br><br>
+    • <strong>Hospital Psiquiátrico Dr. Samuel Ramírez Moreno</strong> — CDMX: Km 13.5 Carretera México-Puebla<br><br>
+    • <strong>Centro de Salud Mental (CESAM)</strong> — Disponible en varios estados<br><br>
+    • <strong>Centros de Integración Juvenil (CIJ)</strong> — En todo el país, busca el más cercano en cij.gob.mx
+    </p>
+  </div>
+</div>
+
+<!-- COMUNIDAD -->
+<div id="comunidad" class="section">
+  <div class="section-title">Red de <span>Apoyo</span></div>
+  <div class="section-subtitle">No estás solo/a — comparte tu experiencia</div>
+
+  <div class="community-form">
+    <h3>💬 Comparte tu mensaje</h3>
+    <div class="form-group">
+      <label>Tu nombre (o apodo)</label>
+      <input type="text" id="comm-name" placeholder="Ej. María, Anónimo, El Guerrero..." maxlength="40">
+    </div>
+    <div class="form-group">
+      <label>Tu mensaje</label>
+      <textarea id="comm-msg" rows="4" placeholder="Comparte tu experiencia, una estrategia que te ayuda, un pensamiento de aliento..."></textarea>
+    </div>
+    <button class="btn" onclick="postMessage()">Publicar mensaje</button>
+  </div>
+
+  <div id="messages-container">
+    <div class="message-card">
+      <div class="meta">
+        <div class="mini-avatar">JG</div>
+        <span>Juancho · Fundador</span>
+      </div>
+      <p>Bienvenidos a este espacio. Si estás aquí, ya diste el primer paso. Esta comunidad es para apoyarnos, no para juzgarnos. Cada quien lleva su propio camino — y todos valen. 💙</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  function show(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-links button').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.getElementById('btn-' + id).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  const messages = [];
+
+  function postMessage() {
+    const name = document.getElementById('comm-name').value.trim() || 'Anónimo';
+    const msg = document.getElementById('comm-msg').value.trim();
+    if (!msg) return;
+
+    const initials = name.slice(0,2).toUpperCase();
+    const colors = ['#56d364,#58a6ff','#f0a050,#ff6b6b','#79c0ff,#56d364','#ff6b6b,#f0a050'];
+    const color = colors[Math.floor(Math.random() * colors.length)];
+
+    const card = document.createElement('div');
+    card.className = 'message-card';
+    card.innerHTML = `
+      <div class="meta">
+        <div class="mini-avatar" style="background:linear-gradient(135deg,${color})">${initials}</div>
+        <span>${name} · ahora</span>
+      </div>
+      <p>${msg.replace(/</g,'&lt;')}</p>
+    `;
+
+    const container = document.getElementById('messages-container');
+    container.insertBefore(card, container.firstChild.nextSibling);
+
+    document.getElementById('comm-name').value = '';
+    document.getElementById('comm-msg').value = '';
+  }
+</script>
+</body>
+</html>
